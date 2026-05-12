@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>US State Dashboard — prices, wages, housing, energy</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
+</head>
+<body>
+  <header>
+    <h1>US State Dashboard</h1>
+    <p class="sub">Monthly prices, wages, housing &amp; energy by state &mdash;
+       quick way to gauge local conditions across 50 states.</p>
+  </header>
+
+  <section id="controls">
+    <label for="metric">Metric:</label>
+    <select id="metric"></select>
+    <label for="month">Month:</label>
+    <select id="month"></select>
+    <span id="meta"></span>
+  </section>
+
+  <main>
+    <div id="map"></div>
+    <aside id="panel">
+      <h2 id="panel-title">Click a state on the map</h2>
+      <div id="ts"></div>
+      <div id="ts-multi"></div>
+    </aside>
+  </main>
+
+  <footer>
+    <p>Data sources: Zillow Research (home values, rent), BLS LAUS/CES (unemployment, wages),
+       Census Building Permits Survey, EIA (electricity, natural gas, gasoline),
+       FRED &amp; BEA Regional (state GDP).
+       Last updated <span id="updated"></span>.</p>
+    <p class="caveat">Caveats: ZORI uses each state's largest metro as proxy
+       (e.g. NY=NYC, CA=LA). State CES wages are not seasonally adjusted.
+       EIA monthly state gasoline only covers CA, TX, FL, NY, MA, MN, OH, WA, CO.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
