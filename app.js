@@ -4,13 +4,16 @@
 const METRICS = [
   { id: 'zhvi',         file: 'data/zhvi.json',         scale: 'Viridis' },
   { id: 'zori',         file: 'data/zori.json',         scale: 'Viridis' },
+  { id: 'hpi',          file: 'data/hpi.json',          scale: 'Purples' },
   { id: 'wages',        file: 'data/wages.json',        scale: 'Cividis' },
+  { id: 'pcpi',         file: 'data/pcpi.json',         scale: 'YlGnBu'  },
   { id: 'unemployment', file: 'data/unemployment.json', scale: 'Reds'    },
   { id: 'permits',      file: 'data/permits.json',      scale: 'Greens'  },
   { id: 'electricity',  file: 'data/electricity.json',  scale: 'YlOrRd'  },
   { id: 'natgas',       file: 'data/natgas.json',       scale: 'YlOrRd'  },
   { id: 'gasoline',     file: 'data/gasoline.json',     scale: 'Oranges' },
   { id: 'gdp',          file: 'data/gdp.json',          scale: 'Blues'   },
+  { id: 'coincident',   file: 'data/coincident.json',   scale: 'Teal'    },
   { id: 'rpp',          file: 'data/rpp.json',          scale: 'RdBu'    },
 ];
 
@@ -86,10 +89,10 @@ function populateMetricSelect() {
   const sel = document.getElementById('metric');
   sel.innerHTML = '';
   const groups = {
-    'Housing': ['zhvi', 'zori', 'permits'],
-    'Labor': ['wages', 'unemployment'],
+    'Housing': ['zhvi', 'hpi', 'zori', 'permits'],
+    'Labor & income': ['wages', 'pcpi', 'unemployment'],
     'Energy': ['electricity', 'natgas', 'gasoline'],
-    'Macro': ['gdp', 'rpp'],
+    'Macro': ['gdp', 'coincident', 'rpp'],
   };
   for (const [gname, ids] of Object.entries(groups)) {
     const og = document.createElement('optgroup');
@@ -355,7 +358,8 @@ function renderMultiMetric() {
   // GDP and permits are stock/count variables that scale with state size, so
   // their median-deviation is dominated by the size-mismatch and would dwarf
   // the price/rate metrics. Keep only intensive (per-unit) metrics here.
-  const order = ['rpp', 'zhvi', 'zori', 'wages', 'unemployment',
+  const order = ['rpp', 'zhvi', 'hpi', 'zori', 'wages', 'pcpi',
+                 'coincident', 'unemployment',
                  'electricity', 'natgas', 'gasoline'];
   const rows = [];
   for (const id of order) {
