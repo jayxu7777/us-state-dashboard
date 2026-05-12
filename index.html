@@ -3,42 +3,94 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>US State Dashboard — prices, wages, housing, energy</title>
+  <title>US State Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
 </head>
 <body>
   <header>
-    <h1>US State Dashboard</h1>
-    <p class="sub">Monthly prices, wages, housing &amp; energy by state &mdash;
-       quick way to gauge local conditions across 50 states.</p>
+    <div class="brand">
+      <h1>US State Dashboard</h1>
+      <p class="sub">Prices, wages, housing &amp; energy across 50 states &middot; updated <span id="updated"></span></p>
+    </div>
+    <div class="controls">
+      <div class="ctl">
+        <label for="metric">Metric</label>
+        <select id="metric"></select>
+      </div>
+      <div class="ctl">
+        <label for="month">Month</label>
+        <select id="month"></select>
+      </div>
+      <div class="ctl">
+        <label for="state">Focus state</label>
+        <select id="state"></select>
+      </div>
+    </div>
   </header>
 
-  <section id="controls">
-    <label for="metric">Metric:</label>
-    <select id="metric"></select>
-    <label for="month">Month:</label>
-    <select id="month"></select>
-    <span id="meta"></span>
+  <section id="kpis">
+    <div class="kpi" id="kpi-national">
+      <div class="kpi-label">National median</div>
+      <div class="kpi-value" id="kpi-national-val">—</div>
+      <div class="kpi-sub" id="kpi-national-sub">—</div>
+    </div>
+    <div class="kpi" id="kpi-focus">
+      <div class="kpi-label" id="kpi-focus-label">Focus state</div>
+      <div class="kpi-value" id="kpi-focus-val">—</div>
+      <div class="kpi-sub" id="kpi-focus-sub">—</div>
+    </div>
+    <div class="kpi" id="kpi-yoy">
+      <div class="kpi-label">12-month change (focus)</div>
+      <div class="kpi-value" id="kpi-yoy-val">—</div>
+      <div class="kpi-sub" id="kpi-yoy-sub">—</div>
+    </div>
+    <div class="kpi" id="kpi-rank">
+      <div class="kpi-label">Focus rank</div>
+      <div class="kpi-value" id="kpi-rank-val">—</div>
+      <div class="kpi-sub" id="kpi-rank-sub">—</div>
+    </div>
   </section>
 
   <main>
-    <div id="map"></div>
-    <aside id="panel">
-      <h2 id="panel-title">Click a state on the map</h2>
+    <section class="card map-card">
+      <div class="card-header">
+        <h2 id="map-title">—</h2>
+        <span id="meta" class="muted"></span>
+      </div>
+      <div id="map"></div>
+    </section>
+
+    <section class="card panel-card">
+      <div class="card-header">
+        <h2 id="panel-title">—</h2>
+        <span class="muted" id="panel-sub"></span>
+      </div>
       <div id="ts"></div>
-      <div id="ts-multi"></div>
-    </aside>
+      <div class="rank-wrap">
+        <h3>Top 5 &middot; Bottom 5</h3>
+        <div class="rank-grid">
+          <table id="rank-top" class="rank-table"></table>
+          <table id="rank-bot" class="rank-table"></table>
+        </div>
+      </div>
+    </section>
   </main>
 
+  <section class="card all-metrics-card">
+    <div class="card-header">
+      <h2 id="multi-title">Cross-metric snapshot</h2>
+      <span class="muted">How the focus state compares to the US median at the latest period for each metric</span>
+    </div>
+    <div id="ts-multi"></div>
+  </section>
+
   <footer>
-    <p>Data sources: Zillow Research (home values, rent), BLS LAUS/CES (unemployment, wages),
-       Census Building Permits Survey, EIA (electricity, natural gas, gasoline),
-       FRED &amp; BEA Regional (state GDP).
-       Last updated <span id="updated"></span>.</p>
-    <p class="caveat">Caveats: ZORI uses each state's largest metro as proxy
-       (e.g. NY=NYC, CA=LA). State CES wages are not seasonally adjusted.
-       EIA monthly state gasoline only covers CA, TX, FL, NY, MA, MN, OH, WA, CO.</p>
+    <p><strong>Sources</strong> &middot; Zillow Research (ZHVI home values, ZORI rent); BLS LAUS (unemployment) &amp; CES (avg hourly earnings); Census Building Permits Survey; EIA Form-861M (electricity), Natural Gas Summary, Petroleum Gnd; FRED/BEA Regional (state GDP); BEA SARPP (regional price parities).</p>
+    <p class="caveat"><strong>Caveats</strong> &middot; ZORI is the largest metro per state (NY=NYC, CA=LA, TX=Dallas). State CES wages are NSA (BLS does not publish state-level SA AHE). EIA monthly state retail gasoline only covers CA, TX, FL, NY, MA, MN, OH, WA, CO &mdash; other states are blank. RPP and GDP are annual/quarterly &mdash; the latest may lag 6&ndash;18 months.</p>
   </footer>
 
   <script src="app.js"></script>
